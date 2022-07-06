@@ -11,8 +11,9 @@
     "commit": "cz"
   },
   "dependencies": {
+    "@vicons/ionicons5": "^0.12.0",
+    "axios": "^0.27.2",
     "core-js": "^3.8.3",
-    "element-plus": "^2.2.8",
     "vue": "^3.2.36",
     "vue-router": "^4.0.13",
     "vuex": "^4.0.2"
@@ -42,7 +43,8 @@
     "prettier-eslint": "^15.0.1",
     "typescript": "~4.5.5",
     "unplugin-auto-import": "^0.9.2",
-    "unplugin-vue-components": "^0.21.0"
+    "unplugin-vue-components": "^0.21.0",
+    "vfonts": "^0.0.3"
   },
   "config": {
     "commitizen": {

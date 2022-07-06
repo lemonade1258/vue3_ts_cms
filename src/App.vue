@@ -9,16 +9,20 @@
     </div>
     <n-button type="tertiary"> Tertiary </n-button>
     <n-button type="primary"> Primary </n-button>
-    <el-button></el-button>
   </div>
+  <loading v-show="$store.state.isShowLoading"></loading>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import loading from './components/loading.vue'
 
 export default defineComponent({
   name: 'App',
-  components: {}
+  components: { loading },
+  setup() {
+    return {}
+  }
 })
 </script>
 
