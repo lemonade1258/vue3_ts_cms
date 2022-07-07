@@ -43,7 +43,7 @@ export default defineComponent({
 .loading .n-spin-body {
   position: absolute;
   top: 30%;
-  left: 46%;
+  left: 47%;
   // background-color: red;
 }
 </style>
