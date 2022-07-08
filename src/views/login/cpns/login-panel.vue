@@ -111,6 +111,7 @@ import { Glasses, GlassesOutline } from '@vicons/ionicons5'
 import { FormItemRule, FormRules, FormInst, useMessage } from 'naive-ui'
 import { defineComponent, ref } from 'vue'
 import localCache from '@/utils/cache'
+import { useStore } from 'vuex'
 
 interface ModelType {
   name: string | null
@@ -120,6 +121,9 @@ interface ModelType {
 
 export default defineComponent({
   setup() {
+    // 获取store
+    const store = useStore()
+
     // 定义数据结构
     const account = ref<ModelType>({
       name: localCache.getCache('name') ?? null,
@@ -138,6 +142,7 @@ export default defineComponent({
       e.preventDefault()
       formRef.value?.validate((errors) => {
         if (!errors) {
+          // 判断是否记住密码
           if (isKeepPassword.value) {
             // 本地缓存
             console.log('记住密码')
@@ -149,6 +154,8 @@ export default defineComponent({
             localCache.deleteCache('password')
           }
 
+          // 开始登录验证
+          store.dispatch('login/accountLoginAction', { ...account.value })
           message.success('登录成功！')
         } else {
           if (isKeepPassword.value) {
@@ -214,7 +221,7 @@ export default defineComponent({
     }
 
     // 记住密码复选框
-    const isKeepPassword = ref(false)
+    const isKeepPassword = ref(true)
 
     return {
       account,
