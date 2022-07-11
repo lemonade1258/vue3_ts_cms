@@ -25,7 +25,7 @@ const hyRequest = new HYRequest({
       return res
     },
     responseInterceptorCatch: (err) => {
-      console.log('相应失败的拦截')
+      console.log('响应失败的拦截')
       return err
     }
   }

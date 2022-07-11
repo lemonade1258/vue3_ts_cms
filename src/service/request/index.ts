@@ -24,28 +24,21 @@ class HYRequest {
     // 添加所有实例都有的拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('所有的实例都有的拦截器：请求拦截成功')
-        console.log('加载中...')
-        store.state.isShowLoading = true
+        // console.log('所有的实例都有的拦截器：请求拦截成功')
+        // console.log('加载中...')
         return config
       },
       (err) => {
-        console.log('所有的实例都有的拦截器：请求失败')
+        // console.log('所有的实例都有的拦截器：请求失败')
         return err
       }
     )
     this.instance.interceptors.response.use(
       (res) => {
-        console.log('所有的实例都有的拦截器：响应拦截成功')
-        setTimeout(() => {
-          store.state.isShowLoading = false
-        }, 1000)
+        // console.log('所有的实例都有的拦截器：响应拦截成功')
         const data = res.data
-        if (data.returnCode === '-1001') {
-          console.log('请求失败')
-        }
 
-        return res
+        return data
       },
       (err) => {
         console.log('所有的实例都有的拦截器：响应失败')
@@ -59,16 +52,41 @@ class HYRequest {
     )
   }
 
-  request(config: HYRequestConfig): void {
-    if (config.interceptors?.requestInterceptor) {
-      config = config.interceptors.requestInterceptor(config)
-    }
-    this.instance.request(config).then((res) => {
-      if (config.interceptors?.responseInterceptor) {
-        res = config.interceptors.responseInterceptor(res)
+  request<T>(config: HYRequestConfig<T>): Promise<T> {
+    return new Promise((resolve, reject) => {
+      // 判断有没有单实例的请求拦截
+      if (config.interceptors?.requestInterceptor) {
+        config = config.interceptors.requestInterceptor(config)
       }
-      console.log('res', res)
+      this.instance
+        .request<any, T>(config)
+        .then((res) => {
+          resolve(res)
+          // 响应拦截
+          if (config.interceptors?.responseInterceptor) {
+            res = config.interceptors.responseInterceptor(res)
+          }
+        })
+        .catch((err) => {
+          reject(err)
+          return err
+        })
     })
+  }
+  get<T = any>(config: HYRequestConfig<T>): Promise<T> {
+    return this.request({
+      ...config,
+      method: 'GET'
+    })
+  }
+  post<T = any>(config: HYRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'POST' })
+  }
+  delete<T = any>(config: HYRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'DELETE' })
+  }
+  patch<T = any>(config: HYRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'PATCH' })
   }
 }
 

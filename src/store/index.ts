@@ -1,22 +1,67 @@
 import { createStore } from 'vuex'
 
-import { IRootState } from './types'
+import { IRootState, IStoreType } from './types'
 
 import login from './login/login'
+import system from './main/system/system'
+
+import { getPageListData } from '@/service/main/system/system'
 
 const store = createStore<IRootState>({
-  state() {
+  state: () => {
     return {
+      entireDepartment: [],
+      entireRole: [],
+      entireMenu: [],
       name: 'coderwhy',
       isShowLoading: false
     }
   },
-  mutations: {},
+  mutations: {
+    changeEntireDepartment(state, list) {
+      state.entireDepartment = list
+    },
+    changeEntireRole(state, list) {
+      state.entireRole = list
+    },
+    changeEntireMenu(state, list) {
+      state.entireMenu = list
+    }
+  },
   getters: {},
-  actions: {},
+  actions: {
+    async getInitialDataAction({ commit }) {
+      // 获取部门 角色列表数据
+      const departmentResult = await getPageListData('/department/list', {
+        offset: 0,
+        size: 1000
+      })
+      const { list: departmentList } = departmentResult.data
+
+      const roleResult = await getPageListData('/role/list', {
+        offset: 0,
+        size: 1000
+      })
+      const { list: roleList } = roleResult.data
+
+      const menuResult = await getPageListData('/menu/list', {})
+
+      const { list: menuList } = menuResult.data
+
+      // 保存角色 部门数据 角色权限
+      commit('changeEntireDepartment', departmentList)
+      commit('changeEntireRole', roleList)
+      commit('changeEntireMenu', menuList)
+    }
+  },
   modules: {
-    login
+    login,
+    system
   }
 })
+
+export function setupStore() {
+  store.dispatch('login/loadLocalLogin')
+}
 
 export default store
