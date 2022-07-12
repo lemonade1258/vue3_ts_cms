@@ -51,16 +51,16 @@ const loginModule: Module<ILoginState, IRootState> = {
       // 2.请求用户信息
       const userInfoResult = await requestUserInfoById(id)
       console.log('userInfoResult', userInfoResult)
-      // const userInfo = userInfoResult.data
-      // commit('changeUserInfo', userInfo)
-      // LocalCache.setCache('userinfo', userInfo)
+      const userInfo = userInfoResult.data
+      commit('changeUserInfo', userInfo)
+      LocalCache.setCache('userinfo', userInfo)
 
       // 3.请求用户菜单
-      // const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
-      // const userMenus = userMenusResult.data
-      // commit('changeUserMenus', userMenus)
-      // LocalCache.setCache('userMenus', userMenus)
-      // console.log('userMenus', userMenus)
+      const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
+      const userMenus = userMenusResult.data
+      commit('changeUserMenus', userMenus)
+      LocalCache.setCache('userMenus', userMenus)
+      console.log('userMenus', userMenus)
 
       // 4.跳到首页
       router.push('/main')

@@ -22,6 +22,8 @@ export function accountLoginRequest(account: IAccount) {
 
 // 获取用户信息
 export function requestUserInfoById(id: number) {
+  console.log(LoginAPI.LoginUserInfo + id)
+
   return hyRequest.get<IDataType>({
     url: LoginAPI.LoginUserInfo + id
   })
