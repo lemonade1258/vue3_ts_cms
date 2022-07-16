@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { AxiosInstance } from 'axios'
 import type { HYRequestInterceptors, HYRequestConfig } from './type'
-import store from '@/store'
+// import store from '@/store'
 
 class HYRequest {
   instance: AxiosInstance

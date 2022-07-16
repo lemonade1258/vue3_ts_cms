@@ -7,9 +7,9 @@ export interface IRootState {
   entireMenu: any[]
 }
 
-export interface IRootwithModule {
+export interface IRootWithModule {
   login: ILoginState
   system: ISystemState
 }
 
-export type IStoreType = IRootState & IRootwithModule
+export type IStoreType = IRootState & IRootWithModule

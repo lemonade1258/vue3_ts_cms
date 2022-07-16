@@ -29,24 +29,25 @@ const loginModule: Module<ILoginState, IRootState> = {
       state.userInfo = userInfo
     },
     changeUserMenus(state, userMenus: any) {
+      console.log('userMenus:', userMenus)
       state.userMenus = userMenus
     }
   },
   getters: {},
   actions: {
     async accountLoginAction({ commit, dispatch }, payload: IAccount) {
-      // 实现登录逻辑
+      // 1.实现登录逻辑
       // console.log('执行accountLoginAction', payload)
       const loginResult = await accountLoginRequest(payload)
       // console.log('loginResult', loginResult)
       console.log('loginResult.data', loginResult.data)
       const { id, token } = loginResult.data
-      console.log('id', id)
-      console.log('token', token)
+      // console.log('id', id)
+      // console.log('token', token)
       commit('changeToken', token)
       LocalCache.setCache('token', token)
 
-      // dispatch('getInitialDataAction', null, { root: true })
+      dispatch('getInitialDataAction', null, { root: true })
 
       // 2.请求用户信息
       const userInfoResult = await requestUserInfoById(id)
@@ -70,13 +71,13 @@ const loginModule: Module<ILoginState, IRootState> = {
       if (token) {
         commit('changeToken', token)
       }
-      const userInfo = LocalCache.getCache('userInfo')
+      const userInfo = LocalCache.getCache('userinfo')
       if (userInfo) {
-        commit('changeuserInfo', userInfo)
+        commit('changeUserInfo', userInfo)
       }
       const userMenus = LocalCache.getCache('userMenus')
       if (userMenus) {
-        commit('changeuserMenus', userMenus)
+        commit('changeUserMenus', userMenus)
       }
     }
   }
