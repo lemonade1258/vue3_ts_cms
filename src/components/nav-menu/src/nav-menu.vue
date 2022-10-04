@@ -2,7 +2,9 @@
   <div class="nav-menu">
     <div class="logo">
       <img class="img" src="~@/assets/img/logo.png" alt="logo" />
-      <span class="title" v-if="!collapse"> Vue3 + TS </span>
+      <transition name="lemon">
+        <span class="title" v-if="!collapse"> Vue3 + TS </span>
+      </transition>
     </div>
     <el-menu
       default-active="2"
@@ -10,8 +12,8 @@
       :collapse="collapse"
       :collapse-transition="true"
       :unique-opened="false"
-      background-color="#041527"
-      text-color="#b7bdc3"
+      background-color="c0c0c0"
+      text-color="black"
       active-text-color="#0a60bd"
     >
       <template v-for="item in userMenus" :key="item.id">
@@ -20,7 +22,7 @@
           <!-- 二级菜单的可以展开的标题 -->
           <el-sub-menu class="el-sub-menu" :index="item.id + ''">
             <template #title>
-              <n-icon>
+              <n-icon class="icon">
                 <DesktopOutline v-if="item.name == '系统总览'" />
                 <BuildOutline v-else-if="item.name == '系统管理'" />
                 <Bag v-else-if="item.name == '商品中心'" />
@@ -30,8 +32,11 @@
             </template>
             <!-- 遍历里面的item -->
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id + ''">
-                <span>{{ subitem.name }}</span>
+              <el-menu-item
+                :index="subitem.id + ''"
+                @click="handelMenuItemClick(subitem)"
+              >
+                <span class="innerWord">{{ subitem.name }}</span>
               </el-menu-item>
             </template>
           </el-sub-menu>
@@ -50,6 +55,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store'
+import { useRouter } from 'vue-router'
 
 import {
   DesktopOutline,
@@ -69,25 +75,60 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const userMenus = computed(() => store.state.login.userMenus)
-    console.log('userMenus', userMenus)
+
+    const router = useRouter()
+
+    const handelMenuItemClick = (item: any) => {
+      router.push({
+        path: item.url ?? '/not-found'
+      })
+    }
 
     return {
       userMenus,
       DesktopOutline,
       BuildOutline,
       Bag,
-      ChatbubbleOutline
+      ChatbubbleOutline,
+      handelMenuItemClick
     }
   }
 })
 </script>
 
 <style scoped lang="less">
+// 动画效果
+.lemon-enter-active {
+  animation: bounce 1s ease;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.word {
+  margin-left: 35px;
+  letter-spacing: 6px;
+  font-size: 15px;
+}
+
+.innerWord {
+  margin-left: 40px;
+}
+
 .nav-menu {
   height: 100%;
-  // overflow-y: hidden;
-  // background-color: #001529;
-  background-color: aliceblue;
+  background-color: c0c0c0;
 
   .logo {
     display: flex;
@@ -96,29 +137,23 @@ export default defineComponent({
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    // background-color: red;
 
     .img {
       height: 100%;
       margin: 0 10px;
-      // background-color: bisque;
     }
 
     .title {
       font-size: 16px;
       font-weight: 700;
-      color: white;
+      color: black;
+      margin-left: 20px;
 
       -moz-user-select: none;
 
       -khtml-user-select: none;
 
       user-select: none;
-
-      // font-style: italic;
-      // background-color: aqua;
-      // width: fit-content;
-      // color: antiquewhite;
     }
   }
 
@@ -126,9 +161,8 @@ export default defineComponent({
     border-right: none;
     -webkit-overflow-scrolling: touch;
     overflow-x: scroll;
-    // overflow-x: none;
     white-space: nowrap;
-    background-color: red;
+    background-color: c0c0c0;
   }
 
   // 滚动条宽度设为0，即隐藏滚动条，对webkit内核支持较好
@@ -140,5 +174,9 @@ export default defineComponent({
 .el-menu-vertical:not(.el-menu--collapse) {
   width: 100%;
   height: calc(100% - 48px);
+}
+
+.icon {
+  margin-left: 5px;
 }
 </style>

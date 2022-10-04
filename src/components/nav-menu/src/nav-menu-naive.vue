@@ -30,11 +30,10 @@ import { defineComponent, h, ref, Component } from 'vue'
 import { NIcon } from 'naive-ui'
 import type { MenuOption } from 'naive-ui'
 import {
-  BookOutline as BookIcon,
-  PersonOutline as PersonIcon,
-  WineOutline as WineIcon,
   DesktopOutline as SystemOverviewIcon,
-  BuildOutline as SystemManageMentIcon
+  BuildOutline as SystemManageMentIcon,
+  Bag as GoodsCenterIcon,
+  ChatbubbleOutline as ProblemsHandingIcon
 } from '@vicons/ionicons5'
 
 import { toRef, computed } from 'vue'
@@ -49,81 +48,10 @@ function renderIcon(icon: Component) {
 
 const menuOptions: MenuOption[] = [
   {
-    label: '且听风吟',
-    key: 'hear-the-wind-sing',
-    icon: renderIcon(BookIcon)
-  },
-  {
-    label: '1973年的弹珠玩具',
-    key: 'pinball-1973',
-    icon: renderIcon(BookIcon),
-    disabled: true,
-    children: [
-      {
-        label: '鼠',
-        key: 'rat'
-      }
-    ]
-  },
-  {
-    label: '寻羊冒险记',
-    key: 'a-wild-sheep-chase',
-    disabled: true,
-    icon: renderIcon(BookIcon)
-  },
-  {
-    label: '舞，舞，舞',
-    key: 'dance-dance-dance',
-    icon: renderIcon(BookIcon),
-    children: [
-      {
-        type: 'group',
-        label: '人物',
-        key: 'people',
-        children: [
-          {
-            label: '叙事者',
-            key: 'narrator',
-            icon: renderIcon(PersonIcon)
-          },
-          {
-            label: '羊男',
-            key: 'sheep-man',
-            icon: renderIcon(PersonIcon)
-          }
-        ]
-      },
-      {
-        label: '饮品',
-        key: 'beverage',
-        icon: renderIcon(WineIcon),
-        children: [
-          {
-            label: '威士忌',
-            key: 'whisky'
-          }
-        ]
-      },
-      {
-        label: '食物',
-        key: 'food',
-        children: [
-          {
-            label: '三明治',
-            key: 'sandwich'
-          }
-        ]
-      },
-      {
-        label: '过去增多，未来减少',
-        key: 'the-past-increases-the-future-recedes'
-      }
-    ]
-  },
-  {
     label: '系统总览',
     key: 'system-overview',
     icon: renderIcon(SystemOverviewIcon),
+    type: 1,
     children: [
       {
         label: () =>
@@ -131,11 +59,12 @@ const menuOptions: MenuOption[] = [
             RouterLink,
             {
               to: {
-                path: 'main/analysis/overview'
+                path: '/main/analysis'
               }
             },
             { default: () => '核心技术' }
           ),
+        type: 2,
         key: 'core-technology'
       },
       {
@@ -144,7 +73,7 @@ const menuOptions: MenuOption[] = [
             RouterLink,
             {
               to: {
-                path: 'main/analysis/dashboard'
+                path: '/main/analysis/dashboard'
               }
             },
             { default: () => '商品统计' }
@@ -164,7 +93,7 @@ const menuOptions: MenuOption[] = [
             RouterLink,
             {
               to: {
-                path: 'main/analysis/overview'
+                path: '/main/analysis/overview'
               }
             },
             { default: () => '用户管理' }
@@ -177,7 +106,7 @@ const menuOptions: MenuOption[] = [
             RouterLink,
             {
               to: {
-                path: 'main/analysis/overview'
+                path: '/main/analysis/overview'
               }
             },
             { default: () => '部门管理' }
@@ -190,7 +119,7 @@ const menuOptions: MenuOption[] = [
             RouterLink,
             {
               to: {
-                path: 'main/analysis/overview'
+                path: '/main/analysis/overview'
               }
             },
             { default: () => '菜单管理' }
@@ -203,12 +132,82 @@ const menuOptions: MenuOption[] = [
             RouterLink,
             {
               to: {
-                path: 'main/analysis/overview'
+                path: '/main/analysis/overview'
               }
             },
             { default: () => '角色管理' }
           ),
         key: 'role-management'
+      }
+    ]
+  },
+  {
+    label: '商品中心',
+    key: 'goods-center',
+    icon: renderIcon(GoodsCenterIcon),
+    type: 1,
+    children: [
+      {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/main/product/category'
+              }
+            },
+            { default: () => '商品类别' }
+          ),
+        type: 2,
+        key: 'goods-category'
+      },
+      {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/main/analysis/dashboard'
+              }
+            },
+            { default: () => '商品信息' }
+          ),
+        key: 'goods-information'
+      }
+    ]
+  },
+  {
+    label: '随便聊聊',
+    key: 'problems-handing',
+    icon: renderIcon(ProblemsHandingIcon),
+    type: 1,
+    children: [
+      {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/main/problems/reflect'
+              }
+            },
+            { default: () => '问题反映' }
+          ),
+        type: 2,
+        key: 'problems-reflect'
+      },
+      {
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/main/problems/list'
+              }
+            },
+            { default: () => '问题列表' }
+          ),
+        key: 'problems-list'
       }
     ]
   }
@@ -228,6 +227,8 @@ export default defineComponent({
 
     console.log('props.collapse', props.collapse)
     const collapsed = toRef(props, 'collapse')
+
+    console.log('menuOptions', menuOptions)
 
     return {
       activeKey: ref<string | null>(null),

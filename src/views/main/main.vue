@@ -14,7 +14,9 @@
           <nav-header @foldChange="handleFoldChange" />
         </n-layout-header>
         <n-layout-content content-style="padding: 24px;" class="page-content">
-          平山道
+          <div class="page-info">
+            <router-view></router-view>
+          </div>
         </n-layout-content>
         <n-layout-footer>成府路</n-layout-footer>
       </n-layout>
@@ -56,6 +58,12 @@ export default defineComponent({
 
 .page-content {
   height: calc(100% - 48px);
+  background: rgba(128, 128, 128, 0.1);
+
+  .page-info {
+    background: #fff;
+    border-radius: 5;
+  }
 }
 .n-layout-sider {
   background: rgba(128, 128, 128, 0.3);
@@ -67,5 +75,9 @@ export default defineComponent({
   color: rgb(176, 110, 110);
   text-align: center;
   align-items: center;
+}
+
+.n-layout-header {
+  background-color: #f3f3f5;
 }
 </style>
