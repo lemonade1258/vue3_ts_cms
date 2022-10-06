@@ -21,10 +21,10 @@ import naive from 'naive-ui'
 const app = createApp(App)
 app.use(globalRegister)
 app.use(naive)
-app.use(router)
 app.use(store)
-app.use(setupStore)
-
+setupStore()
+// app.use(setupStore)
+app.use(router)
 app.mount('#app')
 
 // hyRequest.request({

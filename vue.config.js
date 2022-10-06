@@ -10,7 +10,8 @@ module.exports = {
         },
         changeOrigin: true
       }
-    }
+    },
+    // historyApiFallback: true
   },
   chainWebpack: (config) => {
     config.resolve.alias

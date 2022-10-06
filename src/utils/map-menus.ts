@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from 'vue-router'
-// import { IBreadcrumb } from '@/base-ui/breadcrumb/types'
+import { IBreadcrumb } from '@/base-ui/breadcrumb/types'
 
 let firstMenu: any = null
 
@@ -20,6 +20,7 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
 
   // 2.根据菜单获取需要添加的routes
   const _recurseGetRoute = (menus: any[]) => {
+    // console.log('firstMenu00', firstMenu)
     // 2.1 找到后台 返回该账号的权限列表
     for (const menu of menus) {
       if (menu.type === 2) {
@@ -42,20 +43,21 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
 }
 
 // 遍历查找 当前打开页面的一二级路由菜单信息 面包屑导航显示
+// eslint-disable-next-line
 export function pathMapBreadcrumbs(useMenu: any[], currentPath: string) {
-  // const Breadcrumb: IBreadcrumb[] = []
+  const Breadcrumb: IBreadcrumb[] = []
   // useMenu后台返回的所有路由权限 currentPath 当前打开的页面路由信息 Breadcrumb面包屑数组
-  // pathMapToMenu(useMenu, currentPath, Breadcrumb)
-  // return Breadcrumb
+  pathMapToMenu(useMenu, currentPath, Breadcrumb)
+  return Breadcrumb
 }
 
 // 遍历获取当前打开的路由信息
 export function pathMapToMenu(
-  useMenu: any[],
+  useMenus: any[],
   currentPath: string,
-  breadcrumb?: any[]
+  breadcrumb?: IBreadcrumb[]
 ): any {
-  for (const menu of useMenu) {
+  for (const menu of useMenus) {
     if (menu.type === 1) {
       // type === 1 下面还有子集children
       const findMenu = pathMapToMenu(menu.children ?? [], currentPath)

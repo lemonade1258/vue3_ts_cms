@@ -8,7 +8,7 @@ import system from './main/system/system'
 import { getPageListData } from '@/service/main/system/system'
 
 const store = createStore<IRootState>({
-  state: () => {
+  state() {
     return {
       entireDepartment: [],
       entireRole: [],

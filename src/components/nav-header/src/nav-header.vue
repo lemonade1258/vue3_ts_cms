@@ -5,27 +5,43 @@
       <MenuOutline v-if="isFold" />
     </n-icon>
     <div class="content">
-      <div class="contentBreadcrumb">面包屑</div>
+      <hy-breadcrumb :breadcrumbs="breadcrumbs" />
       <UserInfo />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import UserInfo from './user-info.vue'
 import { Menu, MenuOutline } from '@vicons/ionicons5'
+import HyBreadcrumb from '@/base-ui/breadcrumb'
+
+import { useStore } from '@/store'
+import { useRoute } from 'vue-router'
+import { pathMapBreadcrumbs } from '@/utils/map-menus'
 
 export default defineComponent({
   emits: ['foldChange'],
-  components: { Menu, MenuOutline, UserInfo },
-  setup(propes, { emit }) {
+  components: { Menu, MenuOutline, UserInfo, HyBreadcrumb },
+  setup(_propes, { emit }) {
     const isFold = ref(false)
     const handleFoldClick = () => {
       isFold.value = !isFold.value
       emit('foldChange', isFold.value)
     }
-    return { handleFoldClick, isFold, Menu, MenuOutline }
+
+    // 面包屑的数据: [{name, path}]
+    const store = useStore()
+
+    const breadcrumbs = computed(() => {
+      const userMenus = store.state.login.userMenus
+      const route = useRoute()
+      const currentPath = route.path
+      return pathMapBreadcrumbs(userMenus, currentPath)
+    })
+
+    return { handleFoldClick, isFold, Menu, MenuOutline, breadcrumbs }
   }
 })
 </script>

@@ -63,6 +63,7 @@ export default defineComponent({
   .page-info {
     background: #fff;
     border-radius: 5;
+    // height: 500px;
   }
 }
 .n-layout-sider {
@@ -78,6 +79,7 @@ export default defineComponent({
 }
 
 .n-layout-header {
-  background-color: #f3f3f5;
+  // background-color: #f3f3f5;
+  background-color: #fff;
 }
 </style>
